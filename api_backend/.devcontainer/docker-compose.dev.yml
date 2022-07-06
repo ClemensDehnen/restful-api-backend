@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  api_backend:
+    build: ./api_backend
+
+    volumes:
+      - /vscode-extensions:/root/.vscode-server/extensions:rw
+    command: ["sh", "-c", "pip install debugpy && python -m debugpy --listen 127.0.0.1:5678 -m uvicorn api_backend.api_backend_http_api:app --reload --host 0.0.0.0 --port 80"]

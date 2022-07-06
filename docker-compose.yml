@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongo_db:
+    image: mongo:4.2
+    volumes:
+      - ./mongo_db/data:/data/db
+    ports:
+      - 27017:27017
+  
+  mongo_seeder:
+    build: ./mongo_seeder
+    depends_on:
+      - mongo_db
+  
+  api_backend:
+    build: ./api_backend
+    container_name: api_backend
+    volumes:
+      - ./api_backend/api_backend:/app/api_backend
+    ports:
+      - '8080:80'
+    command: uvicorn api_backend.api_backend_http_api:app --host 0.0.0.0 --port 80
+    
+    
+    depends_on:
+      - mongo_db
